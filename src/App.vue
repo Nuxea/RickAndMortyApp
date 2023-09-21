@@ -5,7 +5,17 @@ import RickAndMortyCards from "@/components/RickAndMortyCards.vue";
 <template>
   <main>
     <h1>HERO</h1>
-    <RickAndMortyCards />
+    <Suspense>
+      <template #default>
+        <RickAndMortyCards />
+      </template>
+      <template #fallback>
+        <div>
+          <p>Loading...</p>
+        </div>
+      </template>
+
+    </Suspense>
   </main>
 </template>
 
