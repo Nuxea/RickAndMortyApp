@@ -15,6 +15,7 @@ const {image, name, status, species} = defineProps([
     <div class="textContainer">
       <h3>{{ name }}</h3>
       <span><small>{{ status }} - {{ species }}</small></span>
+      <slot></slot>
     </div>
   </div>
 
@@ -34,7 +35,7 @@ const {image, name, status, species} = defineProps([
 <style scoped>
 .containerCard {
   display: flex;
-  width: 400px;
+  width: 380px;
   margin: 10px;
 }
 

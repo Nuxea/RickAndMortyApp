@@ -1,25 +1,33 @@
 <script setup>
 import axios from "axios";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import Card from "@/components/Card.vue";
 
 const characters = ref(null)
 const page = ref(1)
 
+/* WITHOUT ONMOUTED */
+/*
 const response = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page.value}`)
 characters.value = response.data.results
+*/
+
+onMounted(async () => {
+  const response = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page.value}`)
+  characters.value = response.data.results
+})
 
 watch(page, async () => {
   const response = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page.value}`)
   characters.value = response.data.results
-  console.log(response)
+  // console.log(response)
 })
 
 </script>
 
 <template>
   <div class="container">
-    <div class="cards">
+    <div v-if="characters" class="cards">
       <Card
           v-for="character in characters"
           :key="character.id"
@@ -28,6 +36,22 @@ watch(page, async () => {
           :status="character.status"
           :species="character.species"
       />
+      <!-- WITH SLOT
+      <Card
+          v-for="character in characters"
+          :key="character.id"
+          :image="character.image"
+          :name="character.name"
+          :status="character.status"
+          :species="character.species"
+      >
+        <p> Ici pour remplir le slot et utiliser des données dynamiques </p>
+      </Card>
+      -->
+
+    </div>
+    <div v-else class="cards spinner">
+      <n-spin size="large" />
     </div>
     <div class="button-container">
       <button @click="page--">&lt</button>
@@ -38,8 +62,11 @@ watch(page, async () => {
 
 <style scoped>
 .container {
-  background-color: rgb(27, 26, 26);
-  width: 100%;
+  margin-top: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 .cards {
   margin: 0 auto;
